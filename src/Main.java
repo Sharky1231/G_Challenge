@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -9,6 +10,7 @@ public class Main {
     static int minIngredient;
     static int maxCellsPerSliece;
     static int currentRow = 0;
+    ArrayList<Slice> slices = new ArrayList<>();
 
     static String[][] pizza;
 
@@ -46,4 +48,9 @@ public class Main {
             currentRow++;
         }
     }
+
+    public void lineCut(int row, int col, int numberOfCells){
+
+    }
+
 }
