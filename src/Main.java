@@ -9,10 +9,12 @@ public class Main {
     static int col;
     static int minIngredient;
     static int maxCellsPerSliece;
+    static int maxLineSize;
+    static int maxRectangularSize;
+    static ArrayList<Slice> slices = new ArrayList<>();
     static int currentRow = 0;
-    ArrayList<Slice> slices = new ArrayList<>();
 
-    static String[][] pizza;
+    static Pizza pizza;
 
     static boolean isFirstLine = true;
 
@@ -20,14 +22,61 @@ public class Main {
 
         File f = new File("D:\\Downloads\\example.in");
 
-        Files.lines(f.toPath()).forEach(Main::parse);
+        // Load a file with rules and make pizza
+        Files.lines(f.toPath()).forEach(Main::parseFile);
+
+        // Print out pizza
+        System.out.println(row + " " + col + " " + minIngredient + " " + maxCellsPerSliece);
+        System.out.println(pizza.toString());
+
+        // Make a slice and print pizza
+        Slice s = pizza.makeCut(0, 0, 2, 1);
+        System.out.println(s.containsEachIngredient(1));
+        System.out.println(pizza.toString());
 
 
-        System.out.println();
+        cutPizza(0, 0, maxRectangularSize, maxRectangularSize, maxLineSize);
+        System.out.println(pizza.toString());
+    }
+
+    public static void cutPizza(int startRow, int startCol, int endRow, int maxRectangularSize, int maxLineSize){
+
+        int rectSize = maxRectangularSize / 2;
+        int lineSize = maxLineSize;
+
+        if(rectSize > 0 && rectCut(startRow, startCol, rectSize)){
+            if(startRow + rectSize < pizza.getHeight())
+            {
+                cutPizza(startRow + rectSize, startCol, endRow + rectSize, maxRectangularSize, maxLineSize);
+            }
+
+            else{
+                cutPizza(startRow + rectSize, startCol, endRow + rectSize, rectSize, maxLineSize);
+            }
+        }
+
+        if(maxLineSize > 0 && lineDownCut(startRow, startCol, maxLineSize)){
+            if(!lineDownCut(startRow, startCol + 1, maxLineSize))
+            {
+                lineDownCut(startRow, startCol + 1, maxLineSize-1);
+            }
+        }
+    }
+
+    public static boolean rectCut(int startRow, int startCol, int rectSize){
+        Slice slice = pizza.makeCut(startRow, startCol, startRow + rectSize, startCol + rectSize);
+
+        return slice != null;
+    }
+
+    public static boolean lineDownCut(int startRow, int startCol, int size){
+        Slice slice = pizza.makeCut(startRow, startCol, startRow + size, startCol);
+
+        return slice != null;
     }
 
 
-    public static void parse(String line) {
+    public static void parseFile(String line) {
         if (isFirstLine) {
             isFirstLine = false;
             String[] rules = line.split(" ");
@@ -36,21 +85,25 @@ public class Main {
             minIngredient = Integer.parseInt(rules[2]);
             maxCellsPerSliece = Integer.parseInt(rules[3]);
 
-            pizza = new String[row][col];
-        }
+            maxLineSize = maxCellsPerSliece;
 
-        else{
+            if (isEven(maxCellsPerSliece)) {
+                maxRectangularSize = maxCellsPerSliece;
+            } else maxRectangularSize = maxCellsPerSliece - 1;
+
+            pizza = new Pizza(row, col, minIngredient);
+        } else {
             String[] letters = line.split("");
 
-            for(int i = 0; i < letters.length; i++){
-                pizza[currentRow][i] = letters[i];
+            for (int i = 0; i < letters.length; i++) {
+                Ingredient ingredient = pizza.getIngredient(letters[i]);
+                pizza.insertIngredient(currentRow, i, ingredient);
             }
             currentRow++;
         }
     }
 
-    public void lineCut(int row, int col, int numberOfCells){
-
+    public static boolean isEven(int number) {
+        return number % 2 == 0;
     }
-
 }
