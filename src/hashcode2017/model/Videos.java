@@ -1,4 +1,4 @@
-package hashcode2017;
+package hashcode2017.model;
 
 /**
  * Created by The One on 23-Feb-17.

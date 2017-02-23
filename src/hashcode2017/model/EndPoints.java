@@ -1,4 +1,4 @@
-package hashcode2017;
+package hashcode2017.model;
 
 
 import java.util.List;
