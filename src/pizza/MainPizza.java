@@ -1,9 +1,11 @@
+package pizza;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-public class Main {
+public class MainPizza {
 
     static int row;
     static int col;
@@ -23,7 +25,7 @@ public class Main {
         File f = new File("D:\\Downloads\\example.in");
 
         // Load a file with rules and make pizza
-        Files.lines(f.toPath()).forEach(Main::parseFile);
+        Files.lines(f.toPath()).forEach(MainPizza::parseFile);
 
         // Print out pizza
         System.out.println(row + " " + col + " " + minIngredient + " " + maxCellsPerSliece);
