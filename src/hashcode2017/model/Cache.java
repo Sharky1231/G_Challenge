@@ -8,6 +8,12 @@ public class Cache {
     private int latency;
     private int casheSize;
 
+    public Cache(int casheID, int latency, int casheSize) {
+        this.casheID = casheID;
+        this.latency = latency;
+        this.casheSize = casheSize;
+    }
+
     public void setCasheID(int casheID) {
         this.casheID = casheID;
     }

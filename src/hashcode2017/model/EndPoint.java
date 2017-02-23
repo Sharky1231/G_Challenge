@@ -1,17 +1,27 @@
 package hashcode2017.model;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by The One on 23-Feb-17.
  */
-public class EndPoints {
+public class EndPoint {
     private int endPointID;
     private int dataCenterLatency;
-    private List cashe;
     private int connectedToAmountOfCashes;
-    private List requests;
+    private List<Cache> cacheLatency;
+    private List<Request> requests;
+
+    public EndPoint(int endPointID, int dataCenterLatency, int connectedToAmountOfCashes) {
+        this.endPointID = endPointID;
+        this.dataCenterLatency = dataCenterLatency;
+        this.connectedToAmountOfCashes = connectedToAmountOfCashes;
+        cacheLatency = new ArrayList<>();
+        requests = new ArrayList<>();
+    }
 
     public int getEndPointID() {
         return endPointID;
@@ -29,12 +39,16 @@ public class EndPoints {
         this.dataCenterLatency = dataCenterLatency;
     }
 
-    public List getCashe() {
-        return cashe;
+    public void addToCacheLatency(Cache cache){
+        cacheLatency.add(cache);
     }
 
-    public void setCashe(List cashe) {
-        this.cashe = cashe;
+    public List<Cache> getCacheLatencies(){
+        return cacheLatency;
+    }
+
+    public void addRequest(Request request){
+        requests.add(request);
     }
 
     public int getConnectedToAmountOfCashes() {
